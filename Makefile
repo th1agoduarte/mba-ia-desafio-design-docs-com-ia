@@ -19,7 +19,7 @@ GATEWAY_URL := http://localhost:$(or $(GATEWAY_PORT),4000)
 COMPOSE := docker compose -f gateway/docker-compose.yml --env-file tools/.env
 ENSURE_GATEWAY = $(if $(filter gateway,$(PROVIDER)),@$(MAKE) --no-print-directory gateway-up,@true)
 
-.PHONY: help setup env check-env smoke test test-one check inventario revisar ciclo evidencias \
+.PHONY: upstream help setup env check-env smoke test test-one check inventario revisar ciclo evidencias \
         gateway-up gateway-down gateway-logs gateway-test clean
 
 help: ## Lista os alvos
@@ -48,12 +48,12 @@ smoke: ## Uma chamada curta ao LLM do PROVIDER (custo mínimo)
 	$(ENSURE_GATEWAY)
 	@$(PY) tools/ia.py smoke
 
-check: ## Critérios de aceite + anti-alucinação (sem LLM): seções, contagens, tracker, citações, caminhos
+check: upstream ## Critérios de aceite + anti-alucinação (sem LLM): seções, contagens, tracker, citações, caminhos
 	@python3 tools/check_docs.py
 
 test: check ## Alias de check (a entrega é documental; não há testes de código a rodar)
 
-test-one: ## Um grupo do verificador: T=Estrutura|PRD|RFC|FDD|ADRs|Tracker|README|Consistência
+test-one: upstream ## Um grupo do verificador: T=Estrutura|PRD|RFC|FDD|ADRs|Tracker|README|Consistência
 	@python3 tools/check_docs.py --grupo "$(T)"
 
 inventario: ## Etapa 1 (LLM): inventário rastreável da transcrição -> docs/evidencias/ia/01-inventario.md
@@ -86,3 +86,7 @@ gateway-test: gateway-up ## Uma chamada /v1/chat/completions -> Gemini pelo gate
 
 clean: ## Remove caches do Python
 	rm -rf tools/__pycache__
+
+upstream: ## Garante o remote upstream (repositório base) usado nas comparações; cria no clone limpo
+	@git remote get-url upstream >/dev/null 2>&1 || git remote add upstream https://github.com/devfullcycle/mba-ia-desafio-design-docs-com-ia.git
+	@git fetch -q upstream
