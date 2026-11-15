@@ -1,0 +1,138 @@
+# make check — 2026-11-15T13:37:50-03:00 — commit c488924
+
+Estrutura
+  ✓ docs/PRD.md existe
+  ✓ docs/RFC.md existe
+  ✓ docs/FDD.md existe
+  ✓ docs/TRACKER.md existe
+  ✓ README.md existe
+  ✓ TRANSCRICAO.md existe
+  ✓ código, configurações e TRANSCRICAO.md idênticos a upstream/main
+
+PRD
+  ✓ seção 'resumo'
+  ✓ seção 'problema'
+  ✓ seção 'publico'
+  ✓ seção 'objetivos metricas'
+  ✓ seção 'escopo'
+  ✓ seção 'requisitos funcionais'
+  ✓ seção 'requisitos nao funcionais'
+  ✓ seção 'decisoes trade-offs'
+  ✓ seção 'dependencias'
+  ✓ seção 'riscos'
+  ✓ seção 'criterios de aceitacao'
+  ✓ seção 'estrategia de testes'
+  ✓ ≥ 8 requisitos funcionais com origem na reunião (14)
+  ✓ objetivo com métrica e meta quantitativa (5 objetivos)
+  ✓ 'Fora de escopo' com ≥ 2 itens da reunião (9)
+  ✓ ≥ 2 riscos com probabilidade, impacto e mitigação (6)
+
+RFC
+  ✓ seção 'metadados'
+  ✓ seção 'resumo executivo'
+  ✓ seção 'contexto'
+  ✓ seção 'proposta tecnica'
+  ✓ seção 'alternativas'
+  ✓ seção 'questoes em aberto'
+  ✓ seção 'impacto riscos'
+  ✓ seção 'decisoes relacionadas'
+  ✓ metadados: autor, status, data, revisores
+  ✓ revisores = os 5 participantes da reunião
+  ✓ ≥ 2 alternativas descartadas com trade-off e origem (6)
+  ✓ ≥ 2 questões em aberto levantadas na reunião (11)
+  ✓ referencia com link ≥ 2 ADRs existentes (7)
+  ✓ RFC conciso (2 a 4 páginas): 1847 palavras
+
+FDD
+  ✓ seção 'contexto'
+  ✓ seção 'objetivos tecnicos'
+  ✓ seção 'escopo'
+  ✓ seção 'fluxos detalhados'
+  ✓ seção 'contratos publicos'
+  ✓ seção 'matriz de erros'
+  ✓ seção 'resiliencia'
+  ✓ seção 'observabilidade'
+  ✓ seção 'integracao com o sistema existente'
+  ✓ seção 'dependencias compatibilidade'
+  ✓ seção 'criterios de aceite'
+  ✓ seção 'riscos'
+  ✓ fluxos cobrem outbox, worker, retry e DLQ
+  ✓ ≥ 4 endpoints com request, response e status codes (6: POST /api/v1/customers/:customerId/webhooks, GET /api/v1/customers/:customerId/webhooks, DELETE /api/v1/webhooks/:id, POST /api/v1/webhooks/:id/rotate-secret, GET /api/v1/webhooks/:id/deliveries, POST /api/v1/admin/webhooks/dead-letter/:id/replay)
+  ✓ matriz de erros só com códigos WEBHOOK_ (12)
+  ✓ 'Integração com o sistema existente' cita ≥ 4 arquivos reais (15)
+  ✓ observabilidade cita métricas, logs e tracing
+
+ADRs
+  ✓ 5 a 8 ADRs no formato ADR-NNN-kebab-case.md (7)
+  ✓ pasta docs/adrs/ com no máximo 8 arquivos no total, contando o README (8)
+  ✓ ADR-001-outbox-no-mysql.md: seção 'status'
+  ✓ ADR-001-outbox-no-mysql.md: seção 'contexto'
+  ✓ ADR-001-outbox-no-mysql.md: seção 'decisao'
+  ✓ ADR-001-outbox-no-mysql.md: seção 'alternativas consideradas'
+  ✓ ADR-001-outbox-no-mysql.md: seção 'consequencias'
+  ✓ ADR-001-outbox-no-mysql.md: consequências positivas, negativas e trade-off
+  ✓ ADR-002-worker-separado-com-polling.md: seção 'status'
+  ✓ ADR-002-worker-separado-com-polling.md: seção 'contexto'
+  ✓ ADR-002-worker-separado-com-polling.md: seção 'decisao'
+  ✓ ADR-002-worker-separado-com-polling.md: seção 'alternativas consideradas'
+  ✓ ADR-002-worker-separado-com-polling.md: seção 'consequencias'
+  ✓ ADR-002-worker-separado-com-polling.md: consequências positivas, negativas e trade-off
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: seção 'status'
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: seção 'contexto'
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: seção 'decisao'
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: seção 'alternativas consideradas'
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: seção 'consequencias'
+  ✓ ADR-003-retry-com-backoff-e-dlq.md: consequências positivas, negativas e trade-off
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: seção 'status'
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: seção 'contexto'
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: seção 'decisao'
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: seção 'alternativas consideradas'
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: seção 'consequencias'
+  ✓ ADR-004-hmac-sha256-com-secret-por-endpoint.md: consequências positivas, negativas e trade-off
+  ✓ ADR-005-at-least-once-com-x-event-id.md: seção 'status'
+  ✓ ADR-005-at-least-once-com-x-event-id.md: seção 'contexto'
+  ✓ ADR-005-at-least-once-com-x-event-id.md: seção 'decisao'
+  ✓ ADR-005-at-least-once-com-x-event-id.md: seção 'alternativas consideradas'
+  ✓ ADR-005-at-least-once-com-x-event-id.md: seção 'consequencias'
+  ✓ ADR-005-at-least-once-com-x-event-id.md: consequências positivas, negativas e trade-off
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: seção 'status'
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: seção 'contexto'
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: seção 'decisao'
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: seção 'alternativas consideradas'
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: seção 'consequencias'
+  ✓ ADR-006-reuso-dos-padroes-do-projeto.md: consequências positivas, negativas e trade-off
+  ✓ ADR-007-payload-snapshot-na-insercao.md: seção 'status'
+  ✓ ADR-007-payload-snapshot-na-insercao.md: seção 'contexto'
+  ✓ ADR-007-payload-snapshot-na-insercao.md: seção 'decisao'
+  ✓ ADR-007-payload-snapshot-na-insercao.md: seção 'alternativas consideradas'
+  ✓ ADR-007-payload-snapshot-na-insercao.md: seção 'consequencias'
+  ✓ ADR-007-payload-snapshot-na-insercao.md: consequências positivas, negativas e trade-off
+  ✓ cobre ≥ 5 das 6 decisões principais (6/6: At-least-once com X-Event-Id, HMAC-SHA256 com secret por endpoint, Outbox no MySQL, Retry com backoff e DLQ, Reuso dos padrões do projeto, Worker separado em polling)
+  ✓ ≥ 1 ADR referencia arquivos reais do código
+
+Tracker
+  ✓ cabeçalho no formato obrigatório
+  ✓ todas as linhas com 6 colunas (229 linhas)
+  ✓ IDs, timestamps e caminhos do tracker conferidos
+  ✓ ≥ 70% das linhas com Fonte TRANSCRICAO e [hh:mm] Nome válido (209/229 = 91%)
+  ✓ ≥ 5 linhas com Fonte CODIGO e caminho real (20)
+  ✓ cobertura ≥ 80% dos itens identificáveis (229/229 = 100%)
+
+README
+  ✓ seção 'sobre o desafio'
+  ✓ seção 'ferramentas de ia'
+  ✓ seção 'workflow'
+  ✓ seção 'prompts customizados'
+  ✓ seção 'iteracoes e ajustes'
+  ✓ seção 'como navegar'
+  ✓ lista ≥ 1 ferramenta de IA
+  ✓ ≥ 2 prompts em blocos de código (3)
+  ✓ ≥ 2 iterações ou ajustes descritos (13)
+
+Consistência
+  ✓ toda citação [hh:mm] Nome nos documentos existe na transcrição
+  ✓ nenhum arquivo de código citado é inexistente (exceto os declarados como novos)
+  ✓ arquivos novos declarados no FDD ficam no módulo novo (12)
+
+118/118 verificações ok
+exit=0
