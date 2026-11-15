@@ -11,7 +11,7 @@ The deliverable is **documentation only**: `docs/PRD.md`, `docs/RFC.md`, `docs/F
 ```bash
 make check                  # tools/check_docs.py: every mechanically checkable acceptance criterion + anti-hallucination (no LLM)
 make test-one T=Tracker     # one group: Estrutura | PRD | RFC | FDD | ADRs | Tracker | README | Consistência
-make evidencias             # writes docs/evidencias/validacao-final.log (re-run before each delivery commit)
+make evidencias             # writes docs/evidencias/validacao-final.txt (re-run before each delivery commit)
 make setup / env / smoke    # tools/.venv (litellm) + tools/.env from ../.env; one short Gemini call
 make inventario             # prompts/01-inventario.md on the transcript -> docs/evidencias/ia/01-inventario.md   (Gemini Flash-Lite)
 make revisar RODADA=N       # prompts/06-revisao-critica.md on the whole package -> docs/evidencias/ia/revisao-N.md (Gemini Flash, ~55k tokens in)

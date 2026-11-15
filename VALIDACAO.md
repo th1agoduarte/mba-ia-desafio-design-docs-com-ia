@@ -93,4 +93,4 @@ Esperado na primeira execução: falha (exit 1) com `[09:34] Sofia` (falante err
 | # | Verificação | Esperado |
 |---|---|---|
 | 11.1 | Repositório no GitHub | Público, fork de `devfullcycle/mba-ia-desafio-design-docs-com-ia`: <https://github.com/th1agoduarte/mba-ia-desafio-design-docs-com-ia> |
-| 11.2 | `docs/evidencias/validacao-final.log` | Saída do `make check` no commit entregue, com `exit=0` |
+| 11.2 | `docs/evidencias/validacao-final.txt` | Saída do `make check` no commit entregue, com `exit=0` |

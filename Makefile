@@ -66,9 +66,9 @@ revisar: ## Etapa final (LLM juiz): revisão crítica independente dos docs -> d
 
 ciclo: check revisar ## Ciclo de revisão: verificador determinístico e depois revisão por LLM (RODADA=N)
 
-evidencias: ## Salva a saída do verificador em docs/evidencias/validacao-final.log
-	@{ echo "# make check — $$(date -Iseconds) — commit $$(git rev-parse --short HEAD)"; python3 tools/check_docs.py; echo "exit=$$?"; } > $(EVID)/validacao-final.log 2>&1; \
-	  tail -2 $(EVID)/validacao-final.log
+evidencias: ## Salva a saída do verificador em docs/evidencias/validacao-final.txt
+	@{ echo "# make check — $$(date -Iseconds) — commit $$(git rev-parse --short HEAD)"; python3 tools/check_docs.py; echo "exit=$$?"; } > $(EVID)/validacao-final.txt 2>&1; \
+	  tail -2 $(EVID)/validacao-final.txt
 
 gateway-up: ## Sobe o gateway LiteLLM (Docker) e espera ficar saudável
 	@$(COMPOSE) up -d --wait llm-gateway >/dev/null && echo "✓ gateway em $(GATEWAY_URL)"

@@ -239,7 +239,7 @@ make test-one T=Tracker        # um grupo: Estrutura | PRD | RFC | FDD | ADRs | 
 python3 tools/check_docs.py    # o mesmo, sem make
 ```
 
-Resultado da validação final: [`docs/evidencias/validacao-final.log`](docs/evidencias/validacao-final.log). O roteiro completo, com prova negativa, está em [`VALIDACAO.md`](VALIDACAO.md).
+Resultado da validação final: [`docs/evidencias/validacao-final.txt`](docs/evidencias/validacao-final.txt). O roteiro completo, com prova negativa, está em [`VALIDACAO.md`](VALIDACAO.md).
 
 ### Reexecutar as etapas de IA
 
