@@ -20,7 +20,7 @@ O endpoint do cliente pode estar fora do ar. Um cliente já ficou duas horas ind
 - **Replay manual por endpoint admin,** `POST /admin/webhooks/dead-letter/:id/replay` ([09:18] Diego; [09:35] Diego). O replay recoloca o evento na outbox como pendente.
 - **O replay exige role `ADMIN`.** Reaproveita o `requireRole` de `src/middlewares/auth.middleware.ts` e registra em log quem fez o replay, para auditoria ([09:36] Sofia; [09:36] Larissa).
 
-> **Interpretação a confirmar (RFC-Q-07).** "5 tentativas" com 5 intervalos só fecha a conta de "quase 15 horas entre primeira falha e última tentativa" (1+5+30+120+720 min = 14 h 36 min) se forem **5 retentativas depois da tentativa inicial** (6 envios no total). Com 5 envios no total, o intervalo de 12 h nunca seria usado e a janela cairia para 2 h 36 min. O FDD adota a leitura de 5 retentativas, e a confirmação fica com Larissa e Diego.
+> **Interpretação a confirmar (RFC-Q-07).** A decisão ([09:17] Larissa) e o resumo final ([09:48] Larissa: "total 5 tentativas") falam em 5 tentativas. "5 tentativas" com 5 intervalos só fecha a conta de "quase 15 horas entre primeira falha e última tentativa" (1+5+30+120+720 min = 14 h 36 min) se forem **5 retentativas depois da tentativa inicial** (6 envios no total). Com 5 envios no total, o intervalo de 12 h nunca seria usado e a janela cairia para 2 h 36 min. O FDD adota a leitura de 5 retentativas, e a confirmação fica com Larissa e Diego.
 
 ## Alternativas Consideradas
 

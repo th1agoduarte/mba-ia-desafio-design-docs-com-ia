@@ -153,7 +153,7 @@ model WebhookDelivery {          // histórico de entregas [09:34] Marcos
 
 model WebhookDeadLetter {        // "payload, motivo da falha e timestamp" [09:18] Diego
   id                String    @id @default(uuid()) @db.Char(36)
-  outboxId          String    @unique @db.Char(36)
+  outboxId          String    @db.Char(36)   // sem @unique: um evento reenviado que falha de novo ganha outra linha
   webhookEndpointId String    @db.Char(36)
   eventId           String    @db.Char(36)
   payload           Json
@@ -167,6 +167,7 @@ model WebhookDeadLetter {        // "payload, motivo da falha e timestamp" [09:1
 
   @@index([failedAt])
   @@map("webhook_dead_letter")
+  @@index([outboxId])
 }
 ```
 
@@ -291,7 +292,7 @@ Na falha:
 ### FDD-FLUXO-04: Envio para a DLQ
 
 Em uma única transação:
-1. cria `webhook_dead_letter` com `outboxId`, `eventId`, `payload`, `failureReason` (código e mensagem) e `failedAt` ([09:18] Diego);
+1. cria uma **nova** linha em `webhook_dead_letter` com `outboxId`, `eventId`, `payload`, `failureReason` (código e mensagem) e `failedAt` ([09:18] Diego). Um evento que volta a falhar depois de um replay ganha outra linha, que pode ser reenviada de novo; por isso `outboxId` não é único (só indexado);
 2. marca a outbox como `FAILED`.
 
 Log `webhook_event_dead_lettered` em nível `warn`. Não há aviso ao cliente: e-mail é da próxima fase ([09:37] Larissa).
@@ -424,6 +425,18 @@ Content-Type: application/json
 ```
 
 Response `200 OK`: o webhook atualizado, no mesmo formato de um item do CONTRATO-02, sem `secret`.
+```json
+{
+  "id": "9b2e7c4d-1f3a-4e5b-8c6d-7a8b9c0d1e2f",
+  "customerId": "3f6c1a2e-8d4b-4c1e-9a7f-2b5d8e9c0a11",
+  "url": "https://hooks.atlas.example/oms/orders",
+  "statuses": ["PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"],
+  "active": true,
+  "previousSecretExpiresAt": null,
+  "createdAt": "2026-11-20T13:58:02.114Z",
+  "updatedAt": "2026-11-20T14:10:45.330Z"
+}
+```
 
 | Status | Quando |
 |---|---|
@@ -585,7 +598,7 @@ X-Signature: sha256=5d41402abc4b2a76b9719d911017c592ae7f1c3b9d2e8a6f4c0b7e1d3a9f
 |---|---|---|
 | `X-Event-Id` | UUID do evento, igual ao `event_id` do corpo. Repete em retry e replay | [09:25] Diego |
 | `X-Signature` | `sha256=` + HMAC-SHA256 em hex dos **bytes exatos do corpo**, com a secret do endpoint. O prefixo `sha256=` é proposta: não discutido | [09:20] Sofia; [09:22] Sofia |
-| `X-Timestamp` | Momento do envio (ISO 8601), para o cliente detectar replay attack se quiser | [09:44] Diego |
+| `X-Timestamp` | Momento do envio (ISO 8601), pedido para o cliente detectar replay attack ([09:44] Diego). **Atenção:** a assinatura cobre só o corpo ([09:22] Sofia), então quem intercepta a requisição pode trocar este header; sozinho, ele não protege contra replay (RFC-Q-12) | [09:44] Diego |
 | `X-Webhook-Id` | Id do endpoint cadastrado | [09:44] Sofia |
 | `Content-Type` | `application/json` | [09:44] Diego |
 

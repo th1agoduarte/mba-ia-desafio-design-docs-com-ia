@@ -35,6 +35,6 @@ make revisar RODADA=N       # prompts/06-revisao-critica.md on the whole package
 ## Status (2026-11-15)
 
 Done:
-- 7 ADRs, RFC, FDD, PRD, tracker (229 rows) and README;
+- 7 ADRs, RFC, FDD, PRD, tracker (230 rows) and README;
 - 2 Gemini inventory runs (v1 → v2) and 2 Gemini review rounds, with every finding accepted or rejected in the README;
 - `make check` 118/118, with a negative test documented in VALIDACAO §9.

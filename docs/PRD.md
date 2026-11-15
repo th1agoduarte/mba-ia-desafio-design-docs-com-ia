@@ -124,7 +124,7 @@ Hoje o OMS não tem nenhum mecanismo de notificação externa.
 |---|---|---|---|
 | PRD-DEC-01 | Registrar o evento no banco atual, junto da mudança de status, e enviar depois | Entrega com alguns segundos de espera, em troca de consistência e de nenhuma infraestrutura nova | [ADR-001](adrs/ADR-001-outbox-no-mysql.md) |
 | PRD-DEC-02 | Processo de envio separado da API, verificando a cada 2 s | Até ~2 s de espera, em troca de simplicidade e de não depender dos deploys da API | [ADR-002](adrs/ADR-002-worker-separado-com-polling.md) |
-| PRD-DEC-03 | 5 retentativas em ~15 h e depois guarda para reenvio manual | Atraso longo no pior caso e reenvio manual, em troca de não perder eventos | [ADR-003](adrs/ADR-003-retry-com-backoff-e-dlq.md) |
+| PRD-DEC-03 | 5 tentativas com backoff em ~15 h (5 retentativas após o envio inicial, leitura a confirmar em RFC-Q-07) e depois guarda para reenvio manual | Atraso longo no pior caso e reenvio manual, em troca de não perder eventos | [ADR-003](adrs/ADR-003-retry-com-backoff-e-dlq.md) |
 | PRD-DEC-04 | Assinatura HMAC-SHA256 com secret por endpoint e rotação com 24 h | Mais segredos para gerenciar, em troca de limitar o impacto de um vazamento | [ADR-004](adrs/ADR-004-hmac-sha256-com-secret-por-endpoint.md) |
 | PRD-DEC-05 | Entrega "pelo menos uma vez", com id para o cliente descartar duplicatas | O cliente precisa deduplicar, em troca de um modelo simples e padrão de mercado | [ADR-005](adrs/ADR-005-at-least-once-com-x-event-id.md) |
 | PRD-DEC-06 | Construir sobre os padrões que o OMS já tem | Herda as limitações atuais, em troca de velocidade e consistência | [ADR-006](adrs/ADR-006-reuso-dos-padroes-do-projeto.md) |

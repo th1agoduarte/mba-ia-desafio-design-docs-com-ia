@@ -58,6 +58,7 @@ Cobertura: todos os IDs definidos em PRD, RFC, FDD e ADRs têm linha aqui. `make
 | RFC-Q-09 | docs/RFC.md | Questão em aberto | Como assinar durante as 24 h de convivência de duas secrets | TRANSCRICAO | [09:21] Sofia |
 | RFC-Q-10 | docs/RFC.md | Questão em aberto | Proteção da secret em repouso (HMAC exige a secret recuperável) | TRANSCRICAO | [09:46] Sofia |
 | RFC-Q-11 | docs/RFC.md | Questão em aberto | Descoberta do id da DLQ: só o replay foi especificado | TRANSCRICAO | [09:18] Diego |
+| RFC-Q-12 | docs/RFC.md | Questão em aberto | X-Timestamp fora da assinatura HMAC não protege contra replay | TRANSCRICAO | [09:22] Sofia; [09:44] Diego |
 | RFC-RISK-01 | docs/RFC.md | Risco | Falha na inserção da outbox derruba a mudança de status (desejado) | TRANSCRICAO | [09:40] Bruno; [09:41] Diego |
 | RFC-RISK-02 | docs/RFC.md | Risco | Worker parado: backlog cresce e latência passa de 10 s | TRANSCRICAO | [09:11] Diego; [09:02] Marcos |
 | RFC-RISK-03 | docs/RFC.md | Risco | Polling de 2 s gera carga constante no MySQL | TRANSCRICAO | [09:08] Diego; [09:09] Diego |

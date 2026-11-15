@@ -51,7 +51,7 @@ código (src/, prisma/, tests/) ──► 2. Mapa do código (Claude Code lendo 
 
    Essa leitura mudou o desenho em vários pontos (iteração 3).
 3. **Documentos na ordem do enunciado:** ADRs → RFC → FDD → PRD → Tracker. Cada documento tem um prompt próprio que define a sua **altura**: o que entra e o que é proibido ali. Por exemplo, o RFC não pode ter colunas de tabela, e o PRD não pode ter classes nem códigos de erro.
-4. **IDs em tudo.** Cada item identificável recebeu um ID (`PRD-FR-03`, `RFC-Q-07`, `FDD-ERR-05`, `ADR-003-ALT-02`...). Com isso, a cobertura do tracker fica mensurável: 229 de 229 IDs têm linha.
+4. **IDs em tudo.** Cada item identificável recebeu um ID (`PRD-FR-03`, `RFC-Q-07`, `FDD-ERR-05`, `ADR-003-ALT-02`...). Com isso, a cobertura do tracker fica mensurável: 230 de 230 IDs têm linha.
 5. **Verificação em duas camadas:**
    - um verificador **determinístico** confere os critérios de aceite e faz checagens anti-alucinação: toda citação `[hh:mm] Nome` em qualquer documento precisa existir na transcrição, e todo caminho de código citado precisa existir ou estar declarado como novo;
    - um **LLM revisor** procura o que regex não pega: contradição semântica, invenção e altura errada.
@@ -60,7 +60,7 @@ código (src/, prisma/, tests/) ──► 2. Mapa do código (Claude Code lendo 
 6. **Convenções contra invenção.**
    - `(novo)` marca arquivo que ainda não existe.
    - **"Proposta: não discutido"** marca uma escolha de implementação que a reunião não fez. O FDD precisa ser acionável, então essas escolhas existem, mas ficam visíveis e não se passam por decisão.
-   - Ambiguidades da própria reunião viraram questões em aberto no RFC (RFC-Q-07 a Q-11), em vez de serem resolvidas em silêncio.
+   - Ambiguidades da própria reunião viraram questões em aberto no RFC (RFC-Q-07 a Q-12), em vez de serem resolvidas em silêncio.
 
 ## Prompts customizados
 
@@ -202,6 +202,16 @@ A rodada 2 só trouxe achados de severidade baixa e confirmou que não havia esc
 | Revisão 1 (Flash) | 54.747 / 20.834 |
 | Revisão 2 (Flash) | 54.854 / 9.025 |
 
+### 6. Code review independente, sem LLM pago, depois da entrega
+
+Um revisor independente releu os documentos contra a transcrição e o código. Os achados procedentes foram corrigidos:
+- **"5 tentativas":** o resumo final ([09:48] Larissa, "total 5 tentativas") não era citado. Agora entra na RFC-Q-07 e no ADR-003, e o PRD-DEC-03 deixa de apresentar "5 retentativas" como decidido.
+- **DLQ:** o `outboxId` era `@unique`. Um evento que voltasse a falhar depois de um replay não teria como entrar de novo na DLQ e ficaria preso. Agora cada nova falha ganha uma linha própria (`@@index([outboxId])`, FDD-FLUXO-04).
+- **`X-Timestamp`:** o FDD prometia detecção de replay com um header fora da assinatura HMAC. Agora isso é a questão em aberto RFC-Q-12, para a revisão de segurança da Sofia.
+- **PATCH (CONTRATO-03):** ganhou o JSON de resposta. Com isso, o `make check` conta 7 endpoints com request, response e status, o que bate com o VALIDACAO.
+
+Ficaram registrados, sem mudança: o `make check` confere a existência das citações, mas não a coerência semântica (por exemplo, não detecta um item fora de escopo descrito como requisito). SSRF por URL do cliente e o rotate-secret sem checagem de dono também ficam fora desta fase, junto com a autorização adiada no RFC-Q-04 e no ADR-006.
+
 ## Como navegar a entrega
 
 ```
@@ -211,10 +221,10 @@ A rodada 2 só trouxe achados de severidade baixa e confirmou que não havia esc
 ├── TRANSCRICAO.md               ← fonte (não alterada)
 ├── docs/
 │   ├── PRD.md                   ← produto: problema, escopo, 14 RFs, métricas, riscos
-│   ├── RFC.md                   ← proposta, 6 alternativas, 11 questões em aberto
+│   ├── RFC.md                   ← proposta, 6 alternativas, 12 questões em aberto
 │   ├── adrs/                    ← 7 ADRs (MADR) + índice
-│   ├── FDD.md                   ← implementação: modelo, fluxos, 8 contratos, 12 erros WEBHOOK_, integração
-│   ├── TRACKER.md               ← 229 linhas: ID → transcrição [hh:mm] Nome ou arquivo
+│   ├── FDD.md                   ← implementação: modelo, fluxos, 8 contratos (7 endpoints e o de saída), 12 erros WEBHOOK_, integração
+│   ├── TRACKER.md               ← 230 linhas: ID → transcrição [hh:mm] Nome ou arquivo
 │   └── evidencias/              ← saídas das etapas de IA e log da validação final
 ├── prompts/                     ← prompts usados (inventário v1/v2, ADRs, RFC, FDD, PRD+tracker, revisão)
 ├── tools/                       ← ia.py (etapas de IA), check_docs.py (verificador), sync_env.py

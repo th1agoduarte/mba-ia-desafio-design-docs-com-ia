@@ -55,7 +55,7 @@ Visão geral. O detalhamento de tabelas, contratos e erros fica no [FDD](FDD.md)
 | RFC-PROP-01 | **Outbox transacional:** `changeStatus` grava o evento na outbox dentro da própria transação. Se essa gravação falhar, a mudança de status sofre rollback | [ADR-001](adrs/ADR-001-outbox-no-mysql.md) |
 | RFC-PROP-02 | **Filtro na origem:** o evento só entra na outbox se algum webhook ativo do customer assina aquele status | [ADR-001](adrs/ADR-001-outbox-no-mysql.md) |
 | RFC-PROP-03 | **Worker separado:** processo próprio com polling de 2 s, PrismaClient próprio no mesmo banco e uma única instância, o que preserva a ordem por pedido | [ADR-002](adrs/ADR-002-worker-separado-com-polling.md) |
-| RFC-PROP-04 | **Resiliência:** timeout de 10 s por chamada, até 5 retentativas com backoff de 1m/5m/30m/2h/12h, e depois DLQ com replay manual restrito a ADMIN | [ADR-003](adrs/ADR-003-retry-com-backoff-e-dlq.md) |
+| RFC-PROP-04 | **Resiliência:** timeout de 10 s por chamada, até 5 retentativas com backoff de 1m/5m/30m/2h/12h (leitura a confirmar, RFC-Q-07), e depois DLQ com replay manual restrito a ADMIN | [ADR-003](adrs/ADR-003-retry-com-backoff-e-dlq.md) |
 | RFC-PROP-05 | **Autenticidade:** HMAC-SHA256 sobre o corpo, com secret gerada pela plataforma para cada endpoint, rotação com 24 h de convivência e `https` obrigatório | [ADR-004](adrs/ADR-004-hmac-sha256-com-secret-por-endpoint.md) |
 | RFC-PROP-06 | **Semântica de entrega:** at-least-once, com `X-Event-Id` estável entre retentativas | [ADR-005](adrs/ADR-005-at-least-once-com-x-event-id.md) |
 | RFC-PROP-07 | **Evento imutável:** payload enxuto, sem itens, gravado como snapshot na inserção | [ADR-007](adrs/ADR-007-payload-snapshot-na-insercao.md) |
@@ -102,11 +102,12 @@ O registro detalhado de cada alternativa está nos ADRs correspondentes.
 
 | ID | Questão | Por que importa |
 |---|---|---|
-| RFC-Q-07 | **"5 tentativas" quer dizer 5 envios ou 5 retentativas?** | Os 5 intervalos (1m/5m/30m/2h/12h) e a janela de "quase 15 horas" ([09:17] Diego) só fecham com 5 retentativas depois do envio inicial. O FDD adota essa leitura, que precisa ser confirmada |
+| RFC-Q-07 | **"5 tentativas" quer dizer 5 envios ou 5 retentativas?** | Os 5 intervalos (1m/5m/30m/2h/12h) e a janela de "quase 15 horas" ([09:17] Diego) só fecham com 5 retentativas depois do envio inicial. Mas o resumo final da reunião ([09:48] Larissa) repete "total 5 tentativas", o que favorece a leitura de 5 envios. O FDD adota a leitura de 5 retentativas, que precisa ser confirmada |
 | RFC-Q-08 | **Ordem por pedido durante o retry** | A ordem por `order_id` ([09:12] Diego) só vale sem falhas. Se o evento A está em backoff, o evento B do mesmo pedido pode sair antes. Bloquear B alonga a fila; não bloquear quebra a ordem. Nada foi decidido |
 | RFC-Q-09 | **Assinatura durante as 24 h de convivência** | A reunião decidiu que a secret antiga continua válida ([09:21] Sofia), mas não definiu como o cliente recebe as duas assinaturas. Há uma proposta no FDD |
 | RFC-Q-10 | **Armazenamento da secret em repouso** | HMAC exige a secret recuperável, então não dá para guardar só o hash. A forma de proteger a secret fica para a revisão de segurança da Sofia ([09:46] Sofia) |
 | RFC-Q-11 | **Como o admin descobre o id do item da DLQ** | Só o replay foi especificado ([09:18] Diego). Não há endpoint de listagem da DLQ |
+| RFC-Q-12 | **`X-Timestamp` fora da assinatura** | O HMAC cobre só os bytes do corpo ([09:22] Sofia), mas o `X-Timestamp` foi pedido para o cliente detectar replay ([09:44] Diego). Sem entrar na assinatura (ou sem o cliente usar o `timestamp` do corpo, que é assinado), o header pode ser trocado. Decidir na revisão de segurança da Sofia |
 
 ## 7. Impacto e riscos
 

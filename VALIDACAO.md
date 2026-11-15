@@ -51,7 +51,7 @@ Roteiro para conferir, do zero, cada critério do [enunciado](DESAFIO.md). Rode 
 
 | # | Verificação | Esperado |
 |---|---|---|
-| 6.1 | `make test-one T=Tracker` | Cabeçalho exato; 229 linhas com 6 colunas; 100% dos IDs dos documentos com linha (mínimo exigido: 80%); 91% com Fonte TRANSCRICAO válida (mínimo: 70%); 20 linhas CODIGO com caminho real (mínimo: 5) |
+| 6.1 | `make test-one T=Tracker` | Cabeçalho exato; 230 linhas com 6 colunas; 100% dos IDs dos documentos com linha (mínimo exigido: 80%); 91% com Fonte TRANSCRICAO válida (mínimo: 70%); 20 linhas CODIGO com caminho real (mínimo: 5) |
 | 6.2 | Leitura, por amostragem: escolha 5 linhas e procure a fala com `grep -n "^\[09:17\] Diego" TRANSCRICAO.md` | A fala sustenta o conteúdo resumido |
 
 ## 7. README
